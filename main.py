@@ -51,6 +51,16 @@ class Lecturer(Mentor):
     def __str__(self):
         res = f'Имя: {self.name} \nФамилия: {self.surname}\nСредняя оценка за лекции:{self.avg_grade()}'
         return res
+    def __lt__(self, other):
+        if not isinstance(other, Student):
+            print('Не студент)')
+            return
+        else:
+            if self.avg_grade() < other.avg_grade():
+                return f'Cредняя оценка преподавателя {self.avg_grade()} ниже, чем у студента: {other.avg_grade()}'
+            else:
+                return f'Cредняя оценка преподавателя {self.avg_grade()} выше, чем у студента: {other.avg_grade()}'
+
 
 
 class Reviewer(Mentor):
@@ -72,22 +82,62 @@ best_student.courses_in_progress += ['Git']
 best_student.finished_courses += ['Введение в программирование']
 best_student.finished_courses += ['Английский для программирования']
 
+normal_student = Student('Ruoy', 'Eman', 'your_gender')
+normal_student.courses_in_progress += ['Python']
+normal_student.courses_in_progress += ['Git']
+normal_student.finished_courses += ['Введение в программирование']
+normal_student.finished_courses += ['Английский для программирования']
+
 cool_reviewer = Reviewer('Some', 'Buddy')
 cool_reviewer.courses_attached += ['Python']
+cool_reviewer.courses_attached += ['Git']
 
 nice_lector = Lecturer('Bob', 'Hunter')
 nice_lector.courses_attached += ['Python']
+nice_lector.courses_attached += ['Git']
 
-best_student.rate_lec(nice_lector, 'Python', 10)
-best_student.rate_lec(nice_lector, 'Python', 10)
-best_student.rate_lec(nice_lector, 'Python', 9)
+bad_lector = Lecturer('Bob', 'Hunter')
+bad_lector.courses_attached += ['Python']
+
+best_student.rate_lec(bad_lector, 'Python', 3)
+best_student.rate_lec(bad_lector, 'Python', 5)
+best_student.rate_lec(bad_lector, 'Python', 9)
+
+normal_student.rate_lec(nice_lector, 'Python', 10)
+normal_student.rate_lec(nice_lector, 'Python', 10)
+normal_student.rate_lec(nice_lector, 'Python', 9)
 
 cool_reviewer.rate_hw(best_student, 'Python', 10)
-cool_reviewer.rate_hw(best_student, 'Python', 10)
-cool_reviewer.rate_hw(best_student, 'Python', 10)
+cool_reviewer.rate_hw(best_student, 'Git', 10)
+cool_reviewer.rate_hw(best_student, 'Python', 7)
 
-# print(best_student.grades)
-# print(nice_lector.grades)
-# print(cool_reviewer)
-# print(nice_lector)
+cool_reviewer.rate_hw(normal_student, 'Git', 1)
+cool_reviewer.rate_hw(normal_student, 'Git', 6)
+cool_reviewer.rate_hw(normal_student, 'Python', 7)
+
+def students_avg(students, courses):
+    summ, count = 0, 0
+    for student in students:
+        if isinstance(student, Student):
+            for i in student.grades[courses]:
+                summ += i
+                count += 1
+    return round(summ / count, 1)
+
+def lecturers_avg(lecturers, courses):
+    summ, count = 0, 0
+    for leuctor in lecturers:
+        if isinstance(leuctor, Lecturer):
+            for i in leuctor.grades[courses]:
+                summ += i
+                count += 1
+    return round(summ / count, 1)
+
+print(best_student.grades)
+print(nice_lector.grades)
+print(cool_reviewer)
+print(nice_lector)
 print(best_student)
+print(best_student > nice_lector)
+print(students_avg([best_student, normal_student], 'Python'))
+print(lecturers_avg([bad_lector, nice_lector], 'Python'))
