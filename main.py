@@ -53,7 +53,7 @@ class Lecturer(Mentor):
         return res
     def __lt__(self, other):
         if not isinstance(other, Student):
-            print('Не студент)')
+            print('Не получится сравнить)')
             return
         else:
             if self.avg_grade() < other.avg_grade():
