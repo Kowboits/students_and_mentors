@@ -28,6 +28,11 @@ class Lecturer(Mentor):
         self.grades = {}
         self.courses_attached = []
 
+    def avg_grade(self):
+        for theme in value(self.grades):
+            for i in theme:
+
+
 class Reviewer(Mentor):
     def rate_hw(self, student, course, grade):
         if isinstance(student, Student) and course in self.courses_attached and course in student.courses_in_progress:
@@ -37,9 +42,13 @@ class Reviewer(Mentor):
                 student.grades[course] = [grade]
         else:
             return 'Ошибка'
+    def __str__(self):
+        res = f'Имя: {self.name} \nФамилия: {self.surname}'
+        return res
 
 best_student = Student('Ruoy', 'Eman', 'your_gender')
 best_student.courses_in_progress += ['Python']
+
 
 cool_reviewer = Reviewer('Some', 'Buddy')
 cool_reviewer.courses_attached += ['Python']
@@ -57,3 +66,4 @@ cool_reviewer.rate_hw(best_student, 'Python', 10)
 
 print(best_student.grades)
 print(nice_lector.grades)
+print(cool_reviewer)
